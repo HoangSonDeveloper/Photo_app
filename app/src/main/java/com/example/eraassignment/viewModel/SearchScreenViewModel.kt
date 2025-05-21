@@ -14,6 +14,7 @@ class SearchScreenViewModel : ViewModel() {
     private val _apiService = ApiService()
     private val _events = MutableSharedFlow<Events>(replay = 0)
     private val _query = mutableStateOf("people")
+    val isRefreshing = mutableStateOf(false)
     val searchTerm = mutableStateOf("people")
 
     private var _page = 1
@@ -27,11 +28,11 @@ class SearchScreenViewModel : ViewModel() {
     fun getImages() {
         viewModelScope.launch {
             try {
+                if (_page == 1) {
+                    isLoading.value = true
+                }
                 val response = _apiService.create.getImages(_query.value, _page)
                 if (response.isSuccessful) {
-                    if (_page == 1) {
-                        isLoading.value = true
-                    }
                     response.body()?.let {
                         images.value += it.photos
                     }
@@ -43,8 +44,16 @@ class SearchScreenViewModel : ViewModel() {
                 _events.emit(Events.ShowToast("Error when getting images ${e.message}"))
             } finally {
                 isLoading.value = false
+                isRefreshing.value = false
             }
         }
+    }
+
+    fun onRefresh() {
+        isRefreshing.value = true
+        _page = 1
+        images.value = emptyList()
+        getImages()
     }
 
     fun setQuery(newQuery: String) {
