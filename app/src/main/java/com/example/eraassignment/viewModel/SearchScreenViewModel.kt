@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 class SearchScreenViewModel : ViewModel() {
     private val _apiService = ApiService()
     private val _events = MutableSharedFlow<Events>(replay = 0)
-    private val _query = mutableStateOf("people")
+    private val _query = mutableStateOf("dog")
     val isRefreshing = mutableStateOf(false)
-    val searchTerm = mutableStateOf("people")
+    val searchTerm = mutableStateOf("dog")
 
     private var _page = 1
 

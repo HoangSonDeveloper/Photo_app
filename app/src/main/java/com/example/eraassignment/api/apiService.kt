@@ -1,5 +1,6 @@
 package com.example.eraassignment.api
 
+import com.example.eraassignment.BuildConfig
 import com.example.eraassignment.model.SearchResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -19,7 +20,7 @@ interface PexelsApi {
 
 
 class ApiService {
-    private val API_KEY = "2TdEzEDHSGYJU4di3JxBth6sewGdmy1REWjsPDd871IW6xOcWjZlsRGj" //should be moved to local.properties
+    private val API_KEY = BuildConfig.PEXELS_API_KEY
     private val BASE_URL = "https://api.pexels.com/v1/"
 
     private val httpClient = OkHttpClient.Builder()

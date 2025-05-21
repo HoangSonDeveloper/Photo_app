@@ -1,12 +1,18 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
-
 android {
     namespace = "com.example.eraassignment"
     compileSdk = 35
+
+    val propertiesFile = rootProject.file("local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(propertiesFile))
 
     defaultConfig {
         applicationId = "com.example.eraassignment"
@@ -16,6 +22,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "PEXELS_API_KEY", "\"${properties.getProperty("PEXELS_API_KEY")}\"")
     }
 
     buildTypes {
@@ -36,11 +44,11 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
